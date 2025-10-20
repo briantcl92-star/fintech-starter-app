@@ -1,3 +1,4 @@
+// for Crossmint SDK users
 // wallet create SDK reference: https://docs.crossmint.com/sdk-reference/wallets/overview#transfer
 
 
@@ -21,7 +22,52 @@ console.log(wallet.address);
 
 // transaction create SDK reference: https://docs.crossmint.com/sdk-reference/wallets/overview#transfer
 
-
 const transaction = await wallet.send(recipient, "usdc", "100");
 
 console.log(transaction.explorerLink);
+
+
+// for Crossmint API users
+// wallet create API reference: https://docs.crossmint.com/api-reference/wallets/create-wallet
+
+import requests
+
+url = "https://staging.crossmint.com/api/2025-06-09/wallets"
+
+payload = {
+    "chainType": "evm",
+    "type": "smart",
+    "config": { "adminSigner": {
+            "type": "external-wallet",
+            "address": "0x1234567890123456789012345678901234567890"
+        } },
+    "owner": "email:user@example.com"
+}
+headers = {
+    "X-API-KEY": "<x-api-key>",
+    "Content-Type": "application/json"
+}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
+
+//create transaction API reference: https://docs.crossmint.com/api-reference/wallets/create-transaction
+
+import requests
+
+url = "https://staging.crossmint.com/api/2025-06-09/wallets/{walletLocator}/transactions"
+
+payload = { "params": {
+        "transaction": "<string>",
+        "requiredSigners": [["passkey:cWtP7gmZbd98HbKUuGXx5Q", "api-key:123456789", "external-wallet:0x1234567890123456789012345678901234567890", "email:test@example.com", "phone:+1234567890"]],
+        "signer": ["passkey:cWtP7gmZbd98HbKUuGXx5Q", "api-key:123456789", "external-wallet:0x1234567890123456789012345678901234567890", "email:test@example.com", "phone:+1234567890"]
+    } }
+headers = {
+    "X-API-KEY": "<x-api-key>",
+    "Content-Type": "application/json"
+}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
