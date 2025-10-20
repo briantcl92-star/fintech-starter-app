@@ -1,0 +1,27 @@
+// wallet create SDK reference: https://docs.crossmint.com/sdk-reference/wallets/overview#transfer
+
+
+import { CrossmintWallets, createCrossmint } from "@crossmint/wallets-sdk";
+
+const crossmint = createCrossmint({
+    apiKey: "<your-client-OR-server-api-key>",
+    jwt: "<your-jwt>", // required for client-side calls, optional for server-side calls
+});
+const crossmintWallets = CrossmintWallets.from(crossmint);
+const wallet = await crossmintWallets.getOrCreateWallet({
+    chain: "<your-chain>",
+    signer: {
+        type: "email",
+        email: "<your-email>",
+    },
+});
+
+console.log(wallet.address);
+
+
+// transaction create SDK reference: https://docs.crossmint.com/sdk-reference/wallets/overview#transfer
+
+
+const transaction = await wallet.send(recipient, "usdc", "100");
+
+console.log(transaction.explorerLink);
